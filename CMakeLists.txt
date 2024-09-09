@@ -7,4 +7,4 @@ function(set_target target)
     target_include_directories(${target} PRIVATE ${target})
 endfunction()
 
-set_target(debug)
+set_target(lab1-debug)
