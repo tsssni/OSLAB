@@ -1,5 +1,5 @@
 {
-  description = "oslab devenv";
+  description = "OSLAB devenv";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
@@ -15,6 +15,9 @@
     in pkgs.mkShell {
       packages = with pkgs; [
           clang
+          lldb
+          cmake
+          gnumake
       ];
 
       shellHook = ''
