@@ -3,17 +3,33 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
+    tsssni-nur = {
+      url = "github:tsssni/nur-packages";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs ,... }: let
+  outputs = { nixpkgs, tsssni-nur, ... }: let
     system = "aarch64-darwin";
   in {
     devShells."${system}".default = let
+      lib = nixpkgs.lib;
       pkgs = import nixpkgs {
         inherit system;
       };
+      tsssni-lib = tsssni-nur.lib;
+      tsssni-cross = lib.mapAttrs (n: crossSystem: 
+        import nixpkgs {
+          inherit
+            system
+            crossSystem;
+        }
+      ) tsssni-lib.system.examples;
+      tsssni-pkgs = tsssni-nur.packages.${system};
     in pkgs.mkShell {
-      packages = with pkgs; [
+      packages = []
+        ++ 
+        (with pkgs; [
           clang
           lldb
           qemu
@@ -22,21 +38,15 @@
           (python3.withPackages (python-pkgs: with python-pkgs; [
             pyyaml
           ]))
-          (gnumake.overrideAttrs (oldAttrs: { configureFlags = oldAttrs.configureFlags ++ [ "--program-prefix=g" ]; }))
-          (gnused.overrideAttrs { configureFlags = [ "--program-prefix=g" ]; })
-          (gnugrep.overrideAttrs { 
-            configureFlags = [ "--program-prefix=g" ]; 
-            postInstall =
-              ''
-                echo "#! /bin/sh" > $out/bin/egrep
-                echo "exec $out/bin/grep -E \"\$@\"" >> $out/bin/egrep
-                echo "#! /bin/sh" > $out/bin/fgrep
-                echo "exec $out/bin/grep -F \"\$@\"" >> $out/bin/fgrep
-                chmod +x $out/bin/egrep $out/bin/fgrep
-              '';  
-          })
-      ];
-
+        ]) 
+        ++ (with tsssni-pkgs; [
+          ggrep
+          gmake
+          gsed
+        ])
+        ++ (with tsssni-cross.aarch64-elf; [
+          stdenv.cc
+        ]);
       shellHook = ''
         exec zsh
       '';

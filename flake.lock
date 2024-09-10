@@ -18,7 +18,28 @@
     },
     "root": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "tsssni-nur": "tsssni-nur"
+      }
+    },
+    "tsssni-nur": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1725931930,
+        "narHash": "sha256-QMaLGAr71+6aYvyXB7tHD2K99tv2KJup2CG9wUYuXzs=",
+        "owner": "tsssni",
+        "repo": "nur-packages",
+        "rev": "2412dd8da5213599d4d380994093553f006e6738",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tsssni",
+        "repo": "nur-packages",
+        "type": "github"
       }
     }
   },
