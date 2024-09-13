@@ -32,12 +32,8 @@
             qemu
             coreutils-prefixed
             cmake
-            (python3.withPackages (python-pkgs: with python-pkgs; [
-              pyyaml
-            ]))
-            (pkgsCross.aarch64-embedded.stdenv.cc)
           ]) 
-        ++ (with tsssni-pkgs; [
+        ++ (with tsssni-pkgs.gnu; [
             ggrep
             gmake
             gsed

@@ -29,11 +29,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1726189790,
-        "narHash": "sha256-WlX7A2Xa/o9sDCz/Uzl1aMo7YGWiLhUsOE30iGEnszY=",
+        "lastModified": 1726192867,
+        "narHash": "sha256-ZI7jes7XUFyxuVHJEMRqK0EoArkA8nXrgFwxYi9Nu+c=",
         "owner": "tsssni",
         "repo": "NUR",
-        "rev": "06c696ad691f029ac5f60a173cd8b54fea976998",
+        "rev": "bf6910546906df933747403d1025906b89406883",
         "type": "github"
       },
       "original": {
