@@ -41,7 +41,6 @@
             qemu
             coreutils-prefixed
             cmake
-            bear
           ]) 
         ++ (with tsssni.pkgs.gnu; [
             ggrep
