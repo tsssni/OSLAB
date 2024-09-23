@@ -3,26 +3,35 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
-    tsssni-nur = {
-      url = "github:tsssni/NUR";
+    tsssni = {
+      url = "github:tsssni/tsssni.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, tsssni-nur, ... }: let
+  outputs = { 
+    nixpkgs
+    , tsssni
+    , ...
+  }@inputs:
+  let
     system = "aarch64-darwin";
   in {
     devShells."${system}".default = let
       pkgs = import nixpkgs {
         inherit system;
       };
-      tsssni-lib = tsssni-nur.lib;
-      tsssni-pkgs = tsssni-nur.pkgs {
-        localSystem = system;
+      tsssni = {
+        lib = inputs.tsssni.lib;
+        pkgs = inputs.tsssni.pkgs { localSystem = system; };
       };
       aarch64-elf-pkgs = import nixpkgs {
         localSystem = system;
-        crossSystem = tsssni-lib.systems.aarch64-elf;
+        crossSystem = {
+          config = "aarch64-elf";
+          lib = "newlib";
+          rustc.config = "aarch64-unknown-none";
+        };
       };
     in pkgs.mkShell {
       packages = []
@@ -32,8 +41,9 @@
             qemu
             coreutils-prefixed
             cmake
+            bear
           ]) 
-        ++ (with tsssni-pkgs.gnu; [
+        ++ (with tsssni.pkgs.gnu; [
             ggrep
             gmake
             gsed
