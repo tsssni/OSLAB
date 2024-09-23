@@ -1,6 +1,3 @@
-[submodule "helloworld"]
-	path = helloworld
-	url = git@github.com:unikraft/app-helloworld.git
 [submodule "app-oslab"]
 	path = app-oslab
 	url = git@github.com:tsssni/app-oslab.git
